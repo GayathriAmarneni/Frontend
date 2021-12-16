@@ -1,0 +1,74 @@
+<!-- HTML form to add leactures. -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Leactures</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function()
+        {
+            let Lecture_counter = 1;
+            var Create_Lecture = $(".Create_New_Lecture");
+            var Btn_Add_Lecture = $(".Add_Lecture");
+            // var Btn_Save_Lecture = $(".Save_Title")
+            var Arr_Lecture_Names = [];
+            $(Btn_Add_Lecture).click(function(e)
+            {
+                $(Create_Lecture).append(
+                `<div id = section${Lecture_counter} class = "Add_New_Lecture" style=" border: 1px solid black; height: 80px; width: 750px;  margin-left: 120px; margin-top: 20px; ">
+                    <div class = "Lecture" style="height: 70px; margin-left: 0px; margin-top: 10px; font-weight: bold; ">
+                        <label>Lecture</label> <lable>${Lecture_counter}</label><label>:</label>
+                        <input type="text" class = "Lecture_Name" maxlength="90" placeholder="Enter a Title" style="width: 600px">
+                            <div class = "Save_And_Remove_Buttons_Container" style = "margin-left: 550px">
+                                <button class = "btn_remove" id = "Remove_Input_Field" style="color: purple; font-weight: bold; max-width: 90px;">Remove</button>
+                            </div>
+                    </div>
+                </div>`);
+                Lecture_counter++;
+            });
+            // $(Create_Lecture).on('click', '.btn_remove', function(e)
+            // {  
+            //     e.preventDefault();
+            //     $(this).parent('div').remove();
+            //     Lecture_counter--;
+               
+            // });
+            $(".Save_Title").on("click", function()
+            {
+            
+                $(".Lecture_Name").each(function()
+                {
+                    let Lecture_Name = $(this).val();
+                    if(Arr_Lecture_Names.includes(Lecture_Name))
+                    {
+                        alert(`${Lecture_Name} is already existed in the lectures.`);
+                    }
+                    else
+                    {
+                        Arr_Lecture_Names.push(Lecture_Name);
+                    }
+                });
+                console.log(Arr_Lecture_Names);
+            });
+
+        });
+        
+    </script>
+
+</head>
+<body>
+    <div class = "Add_New_Lecture_Box" style = " height : auto; width: 1000px; border: 1px solid black;">
+        <input type = "button" class = "Add_Lecture"  value = "+ADD" >
+
+        <button type="submit" style = "background-color: black; color: white; max-width: 170px; " class = "Save_Title" >Save</button>
+
+        <div class = "Create_New_Lecture" style="margin: left"></div>
+    </div>
+
+</body>
+</html>
