@@ -1,4 +1,4 @@
-<!-- HTML form to add leactures. -->
+<!-- HTML form to add lectures. -->
 
 <!DOCTYPE html>
 <html>
@@ -15,30 +15,28 @@
             let Lecture_counter = 1;
             var Create_Lecture = $(".Create_New_Lecture");
             var Btn_Add_Lecture = $(".Add_Lecture");
-            // var Btn_Save_Lecture = $(".Save_Title")
             var Arr_Lecture_Names = [];
             $(Btn_Add_Lecture).click(function(e)
             {
                 $(Create_Lecture).append(
-                `<div id = section${Lecture_counter} class = "Add_New_Lecture" style=" border: 1px solid black; height: 80px; width: 750px;  margin-left: 120px; margin-top: 20px; ">
-                    <div class = "Lecture" style="height: 70px; margin-left: 0px; margin-top: 10px; font-weight: bold; ">
-                        <label>Lecture</label> <lable>${Lecture_counter}</label><label>:</label>
-                        <input type="text" class = "Lecture_Name" maxlength="90" placeholder="Enter a Title" style="width: 600px">
-                            <div class = "Save_And_Remove_Buttons_Container" style = "margin-left: 550px">
-                                <button class = "btn_remove" id = "Remove_Input_Field" style="color: purple; font-weight: bold; max-width: 90px;">Remove</button>
-                            </div>
-                    </div>
+                `<div class = "Lecture" style="height: 70px; margin-left: 30px; margin-top: 20px; font-weight: bold; ">
+                    <label>Lecture</label> 
+                    <lable>${Lecture_counter}</label>
+                    <label>:</label>
+                    <input type="text" class = "Lecture_Name" maxlength="70" placeholder="Enter a Title" style="width: 600px">
+                    <button class = "btn_remove" id = "Remove_Input_Field" style="color: purple; font-weight: bold; max-width: 90px; margin-left: 500px; ">Remove</button>
+                    <button type="submit" style = "background-color: black; color: white; width: 100px; font-weight: bold; " class = "Save_Title" >Save Lecture</button>
+                    
                 </div>`);
                 Lecture_counter++;
             });
-            // $(Create_Lecture).on('click', '.btn_remove', function(e)
-            // {  
-            //     e.preventDefault();
-            //     $(this).parent('div').remove();
-            //     Lecture_counter--;
+            $(Create_Lecture).on("click", ".btn_remove", function()
+            {  
+                $(this).closest('div').remove();
+                Lecture_counter--;
                
-            // });
-            $(".Save_Title").on("click", function()
+            });
+            $(Create_Lecture).on("click", ".Save_Title", function()
             {
             
                 $(".Lecture_Name").each(function()
@@ -54,21 +52,23 @@
                     }
                 });
                 console.log(Arr_Lecture_Names);
+                
+                $(this).closest('div').find("input[type=text], textarea").val("");
             });
-
         });
         
     </script>
 
 </head>
 <body>
-    <div class = "Add_New_Lecture_Box" style = " height : auto; width: 1000px; border: 1px solid black;">
-        <input type = "button" class = "Add_Lecture"  value = "+ADD" >
+    <div class = "Add_New_Lecture_Box" style = " height : auto; width: 800px; border: 1px solid black;">
+        <input type = "button" style = "margin-left: 650px" class = "Add_Lecture"  value = "ADD" >
 
-        <button type="submit" style = "background-color: black; color: white; max-width: 170px; " class = "Save_Title" >Save</button>
+        <button type="submit" style = "background-color: black; color: white; font-weight: bold; width: 50px; " class = "Save" >Save</button>
 
         <div class = "Create_New_Lecture" style="margin: left"></div>
     </div>
 
 </body>
 </html>
+
