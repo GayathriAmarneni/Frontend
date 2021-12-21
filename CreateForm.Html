@@ -3,72 +3,102 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add New Leactures</title>
+    <title>Create Session</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script>
+        var arrLectureNames = [];
         $(document).ready(function()
         {
-            let Lecture_counter = 1;
-            var Create_Lecture = $(".Create_New_Lecture");
-            var Btn_Add_Lecture = $(".Add_Lecture");
-            var Arr_Lecture_Names = [];
-            $(Btn_Add_Lecture).click(function(e)
+            var createLecture = $(".createNewLecture");
+            var btnAddLecture = $(".addLecture");
+            $(btnAddLecture).click(function(e)
             {
-                $(Create_Lecture).append(
-                `<div class = "Lecture" style="height: 70px; margin-left: 30px; margin-top: 20px; font-weight: bold; ">
-                    <label>Lecture</label> 
-                    <lable>${Lecture_counter}</label>
-                    <label>:</label>
-                    <input type="text" class = "Lecture_Name" maxlength="70" placeholder="Enter a Title" style="width: 600px">
-                    <button class = "btn_remove" id = "Remove_Input_Field" style="color: purple; font-weight: bold; max-width: 90px; margin-left: 500px; ">Remove</button>
-                    <button type="submit" style = "background-color: black; color: white; width: 100px; font-weight: bold; " class = "Save_Title" >Save Lecture</button>
-                    
+                $(createLecture).append(
+                `<div id = section class = "addNewLecture" style=" border: 1px solid black; height: 80px; width: 750px;  margin-left: 60px; margin-top: 20px; ">
+                    <div class = "Lecture" id = "subDiv" style="height: 70px; margin-left: 30px; margin-top: 20px; font-weight: bold; ">
+                        <label id = "${arrLectureNames.length + 1}">Lecture ${arrLectureNames.length + 1}: </label> 
+                        
+                        <input type="text" class = "lectureName" maxlength="70" placeholder="Enter a Title" style="width: 600px">
+                        <button class = "btnRemove" id = "Remove_Input_Field" style="color: purple; font-weight: bold; max-width: 90px; margin-left: 500px; ">Cancel</button>
+                        <button type="submit" style = "background-color: black; color: white; max-width: 150px; font-weight: bold;" class = "Save_Title" >Save Lecture</button>
+                    </div>
                 </div>`);
-                Lecture_counter++;
             });
-            $(Create_Lecture).on("click", ".btn_remove", function()
+            
+            $(createLecture).on("click", ".btnRemove", function()
             {  
-                $(this).closest('div').remove();
-                Lecture_counter--;
-               
+                $(this).parent('div').parent('div').remove();
+                $(".addLecture").attr("disabled", false);
             });
-            $(Create_Lecture).on("click", ".Save_Title", function()
+
+            $(".addLecture").click(function (e)
+            {
+                    e.preventDefault();
+                    $(".addLecture").attr("disabled", true);
+            });
+
+            $(createLecture).on("click", ".Save_Title", function()
             {
             
-                $(".Lecture_Name").each(function()
+                $(".lectureName").each(function()
                 {
-                    let Lecture_Name = $(this).val();
-                    if(Arr_Lecture_Names.includes(Lecture_Name))
+                    let lectureName = $(this).val();
+                    if(arrLectureNames.includes(lectureName))
                     {
-                        alert(`${Lecture_Name} is already existed in the lectures.`);
+                        alert(`${lectureName} is already existed in the lectures.`);
                     }
                     else
                     {
-                        Arr_Lecture_Names.push(Lecture_Name);
+                        arrLectureNames.push(lectureName);
+                        $("#section").replaceWith(
+                            `<div id = "replaceDiv" style = "height: 55px; width: 550px; font-weight: bold;  margin-left: 90px; margin-bottom: 20px; border: 1px solid black;>
+                                <label class = "label" id = "${arrLectureNames.length + 1}" style = "margin-left: 20px; font-size: 18px; ">Lecture ${arrLectureNames.length}: ${lectureName}</label>
+                                <div class = "saveAndEditButtons" style = "margin-left: 430px; font-weight: bold;">
+                                    <button class = "classRemove" style = "color: purple; ">
+                                        <span class="glyphicon glyphicon-remove">
+                                    </button>
+                                    <button class = "classEdit" style = "color: purple; ">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </button>
+                                    
+                                </div>
+                            </div>`)
                     }
                 });
-                console.log(Arr_Lecture_Names);
+                console.log(arrLectureNames);
                 
                 $(this).closest('div').find("input[type=text], textarea").val("");
+                $(".addLecture").attr("disabled", false);
             });
+
+            $(createLecture).on("click", ".classRemove", function()
+            {
+                $(this).parent("div").parent("div").remove();
+                const labels = $(".label");
+                const attribute = labels.attr("id");
+                arrLectureNames.splice(attribute, 1);
+            });
+            
         });
         
     </script>
 
 </head>
 <body>
-    <div class = "Add_New_Lecture_Box" style = " height : auto; width: 800px; border: 1px solid black;">
-        <input type = "button" style = "margin-left: 650px" class = "Add_Lecture"  value = "ADD" >
+    <div class = "Add_New_Lecture_Box" style = " height : auto; width: 900px; border: 1px solid black;">
+        <input type = "button" style = "margin-left: 750px" class = "addLecture"  value = "ADD" >
 
         <button type="submit" style = "background-color: black; color: white; font-weight: bold; width: 50px; " class = "Save" >Save</button>
 
-        <div class = "Create_New_Lecture" style="margin: left"></div>
+        <div class = "createNewLecture" style="margin: left"></div>
     </div>
 
 </body>
 </html>
+
 
