@@ -9,89 +9,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script>
         var arrLectureNames = [];
         $(document).ready(function()
         {
             var createLecture = $(".createNewLecture");
-            var btnAddLecture = $(".addLecture");
-            $(btnAddLecture).click(function(e)
+            var addLecture = $(".addNewLecture");
+            $(addLecture).click(function(e)
             {
                 $(createLecture).append(
-                `<div id = section class = "addNewLecture" style=" border: 1px solid black; height: 80px; width: 750px;  margin-left: 60px; margin-top: 20px; ">
+                `<div id = subDiv${arrLectureNames.length} class = "addNewLecture" style=" border: 1px solid black; height: 80px; width: 750px;  margin-left: 60px; margin-top: 20px; ">
                     <div class = "Lecture" id = "subDiv" style="height: 70px; margin-left: 30px; margin-top: 20px; font-weight: bold; ">
                         <label id = "${arrLectureNames.length + 1}">Lecture ${arrLectureNames.length + 1}: </label> 
                         
-                        <input type="text" class = "lectureName" maxlength="70" placeholder="Enter a Title" style="width: 600px">
-                        <button class = "btnRemove" id = "Remove_Input_Field" style="color: purple; font-weight: bold; max-width: 90px; margin-left: 500px; ">Cancel</button>
-                        <button type="submit" style = "background-color: black; color: white; max-width: 150px; font-weight: bold;" class = "Save_Title" >Save Lecture</button>
+                        <input type="text" class = "lectureName" id = "idTextBox${arrLectureNames.length}" maxlength="70" placeholder="Enter a Title" style="width: 600px">
+                        <div class = "saveAndEditButtons" id = "childDiv${arrLectureNames.length}" style = "margin-left: 430px; font-weight: bold;">
+                            <button class = "classRemove" onclick = "removeLecture('subDiv${arrLectureNames.length}', '${arrLectureNames.length}')" style = "color: purple; ">
+                                <span class="glyphicon glyphicon-trash">
+                            </button>
+                            <button class = "classEdit" onclick = "editLecture('replace${arrLectureNames.length}', '${arrLectureNames.length}')" style = "color: purple; ">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+                                
+                        </div>
+                        <div id = "btnId${arrLectureNames.length}" class= "saveAndCancelBtns" style = "margin-left: 500px">
+                            <button class = "btnRemove" onclick = "cancelLecture('subDiv${arrLectureNames.length}')" style="color: purple; font-weight: bold; max-width: 90px; ">Cancel</button>
+                            <button type="submit" onclick = "saveLecture('idTextBox${arrLectureNames.length}', '${arrLectureNames.length}')" style = "background-color: black; color: white; max-width: 150px; font-weight: bold;" class = "Save_Title" >Save Lecture</button>
+                        </div>
                     </div>
                 </div>`);
-            });
-            
-            $(createLecture).on("click", ".btnRemove", function()
-            {  
-                $(this).parent('div').parent('div').remove();
-                $(".addLecture").attr("disabled", false);
-            });
+                $(".addLecture").attr("disabled", true);
+                $(`#childDiv${arrLectureNames.length}`).attr("hidden", true);
 
-            $(".addLecture").click(function (e)
-            {
-                    e.preventDefault();
-                    $(".addLecture").attr("disabled", true);
-            });
-
-            $(createLecture).on("click", ".Save_Title", function()
-            {
-            
-                $(".lectureName").each(function()
-                {
-                    let lectureName = $(this).val();
-                    if(arrLectureNames.includes(lectureName))
-                    {
-                        alert(`${lectureName} is already existed in the lectures.`);
-                    }
-                    else
-                    {
-                        arrLectureNames.push(lectureName);
-                        $("#section").replaceWith(
-                            `<div id = "replaceDiv" style = "height: 55px; width: 550px; font-weight: bold;  margin-left: 90px; margin-bottom: 20px; border: 1px solid black;>
-                                <label class = "label" id = "${arrLectureNames.length + 1}" style = "margin-left: 20px; font-size: 18px; ">Lecture ${arrLectureNames.length}: ${lectureName}</label>
-                                <div class = "saveAndEditButtons" style = "margin-left: 430px; font-weight: bold;">
-                                    <button class = "classRemove" style = "color: purple; ">
-                                        <span class="glyphicon glyphicon-trash">
-                                    </button>
-                                    <button class = "classEdit" style = "color: purple; ">
-                                        <span class="glyphicon glyphicon-pencil"></span>
-                                    </button>
-                                    
-                                </div>
-                            </div>`)
-                    }
-                });
-                console.log(arrLectureNames);
-                
-                $(this).closest('div').find("input[type=text], textarea").val("");
-                $(".addLecture").attr("disabled", false);
-            });
-
-            $(createLecture).on("click", ".classRemove", function()
-            {
-                $(this).parent("div").parent("div").remove();
-                const labels = $(".label");
-                const attribute = labels.attr("id");
-                arrLectureNames.splice(attribute, 1);
             });
             
         });
+
+        function cancelLecture(id)
+        {  
+            $(`#${id}`).remove();
+            $(".addNewLecture").attr("disabled", false);
+        }
+        function saveLecture(inputId, index)
+        {
         
+            let lectureName = $(`#${inputId}`).val();
+            if(arrLectureNames.includes(lectureName))
+            {
+                alert(`${lectureName} is already existed in the lectures.`);
+            }
+            else
+            {
+                arrLectureNames.splice(index, 1, lectureName);
+                console.log(arrLectureNames);
+            }
+            $(`#${inputId}`).replaceWith(`<label class = "label" id = "replace${index}" style = "font-size: 15px; color: black;"> ${lectureName}</label>`)
+            $(`#childDiv${index}`).attr("hidden", false);
+            $(`#btnId${index}`).attr('hidden', true);
+            // $(this).closest('div').find("input[type=text], textarea").val("");
+            $(".addNewLecture").attr("disabled", false);
+        }
+        function removeLecture(subDivId, index)
+        {
+            $(`#${subDivId}`).remove();
+            arrLectureNames.splice(index, 1);
+            console.log(arrLectureNames);
+            $(".createNewLecture").empty();
+            arrLectureNames.forEach(replace);
+        }
+
+        function editLecture(replaceLabelId, index)
+        {
+            let textInput = arrLectureNames[index];
+            $(`#${replaceLabelId}`).replaceWith(`<input type="text" class = "lectureName" id = "idTextBox${index}" maxlength="70" placeholder="Enter a Title" style="width: 600px" value = '${textInput}'>`);
+            $(".addNewLecture").attr("disabled", true);
+            
+            $(`#childDiv${index}`).attr("hidden", true);
+            $(`#btnId${index}`).attr('hidden', false);
+        }
+        
+        function replace(subDivId, index)
+        {
+            $(".createNewLecture").append(
+            `<div id = subDiv${index} class = "addNewLecture" style=" border: 1px solid black; height: 80px; width: 750px;  margin-left: 60px; margin-top: 20px; ">
+                    <div class = "Lecture" id = "subDiv" style="height: 70px; margin-left: 30px; margin-top: 20px; font-weight: bold; ">
+                        <label id = "${index}">Lecture ${index + 1}: </label> 
+                        <label id = "labelId${index}">${subDivId}</label>
+                        
+                        <div class = "saveAndEditButtons" id = "childDiv${index}" style = "margin-left: 430px; font-weight: bold;">
+                            <button class = "classRemove" onclick = "removeLecture('subDiv${index}', '${index}')" style = "color: purple; ">
+                                <span class="glyphicon glyphicon-trash">
+                            </button>
+                            <button class = "classEdit" onclick = "editLecture('labelId${index}', '${index}')" style = "color: purple; ">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+                                
+                        </div>
+                        <div id = "btnId${index}" class= "saveAndCancelBtns" style = "margin-left: 500px">
+                            <button class = "btnRemove" onclick = "cancelLecture('subDiv${index}')" style="color: purple; font-weight: bold; max-width: 90px; ">Cancel</button>
+                            <button type="submit" onclick = "saveLecture('idTextBox${index}', '${index}')" style = "background-color: black; color: white; max-width: 150px; font-weight: bold;" class = "Save_Title" >Save Lecture</button>
+                        </div>
+                    </div>
+                </div>`);
+                $(".addNewLecture").attr("disabled", false);
+                // $(`#childDiv${index}`).attr("hidden", false);
+                $(`#btnId${index}`).attr('hidden', true);
+
+        }
     </script>
 
 </head>
 <body>
-    <div class = "Add_New_Lecture_Box" style = " height : auto; width: 900px; border: 1px solid black;">
-        <input type = "button" style = "margin-left: 750px" class = "addLecture"  value = "ADD" >
+    <div class = "classAddNewSession" style = " height : auto; width: 900px; border: 1px solid black;">
+        <input type = "button" style = "margin-left: 750px" class = "addNewLecture"  value = "ADD" >
 
         <button type="submit" style = "background-color: black; color: white; font-weight: bold; width: 50px; " class = "Save" >Save</button>
 
@@ -100,5 +130,3 @@
 
 </body>
 </html>
-
-
