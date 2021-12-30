@@ -1,0 +1,201 @@
+<!-- Create session and saving lecture names in array using EJS  -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Session</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="ejs.min.js"></script>
+    <script>
+        var lectureArray = [];
+        var mainElementId = "#createNewLecture";
+        function generateUID()
+        {
+        	const uniqueId = "id" + Math.random().toString(36).slice(6);
+        	return uniqueId;
+        }
+        function addNewLectureDiv()
+        {
+            const lectureObj = {id: generateUID(), lecTitle: "", lectureState: "", articleDraftStatus: false, article: {Content: "", state: ""}};
+            lectureArray.push(lectureObj);
+            var lectureObjId = lectureObj.id;
+            let index = lectureArray.findIndex(lecObj=>lecObj.id == lectureObjId);
+            lectureArray[index].lectureState = 'EDIT';
+            let newLectureTemplate = reRender(lectureObjId);
+            $(mainElementId).append(newLectureTemplate);
+        }
+            
+        function reRender(lectureObjId)
+        {
+        	let index = lectureArray.findIndex(lecObj=>lecObj.id == lectureObjId);
+            const template = 
+            `
+            <% 
+            if (lectureObj.lectureState == 'EDIT')
+            	{ %>
+                    <div id = "subMainDiv<%= lectureObj.id %>">
+                        <div id = "subDiv1<%= lectureObj.id %>" class = "addNewLecture" style=" border: 1px solid black; height: auto; width: 750px;  margin-left: 60px; margin-top: 20px; ">
+    	                	<div class = "Lecture" id = "subDiv<%= lectureObj.id %>" style="height: 70px; margin-left: 30px; margin-top: 20px; font-weight: bold; ">
+    		                    <label id = "labelId">Lecture <%= index + 1 %> : </label> 
+    		                    
+    		                    <input type="text" class = "lectureName" id = "idTextBox<%= lectureObj.id %>" maxlength="70" placeholder="Enter a Title" value = "<%= lectureObj.lecTitle %>" style="width: 600px">
+    		                    
+    		                    <div id = "btnId<%= lectureObj.id %>" class= "saveAndCancelBtns" style = "margin-left: 500px">
+    		                        <button class = "btnRemove" onclick = "cancelLectureDiv('subDiv1<%= lectureObj.id %>', '<%= lectureObj.id %>')"style="color: purple; font-weight: bold; max-width: 90px; ">Cancel</button>
+    		                        <button type="submit" onclick = "saveLecture('idTextBox<%= lectureObj.id %>', '<%= lectureObj.id %>', 'subDiv1<%= lectureObj.id %>')" style = "background-color: black; color: white; max-width: 150px; font-weight: bold;" class = "saveTitle" >Save Lecture</button>
+    		                    </div>
+    		                </div>
+                        </div>
+                    </div>
+                <% } %>
+            <% if(lectureObj.lectureState == 'DISPLAY') 
+                { %>
+            
+                    <div class = "Lecture" id = "childDiv<%= lectureObj.id %>" style="height: auto; margin-left: 30px; margin-top: 10px; font-weight: bold; ">
+                       <label class = "label" id = "replace<%= lectureObj.id %>" style = "font-size: 15px; color: black;">Lecture <%= index + 1 %>: <%= lectureObj.lecTitle %></label>
+                        <button class = "classRemove"  style = "color: purple; " onclick = "removeLecture('subMainDiv<%= lectureObj.id %>', '<%= lectureObj.id %>')">
+                            <span class="glyphicon glyphicon-trash">
+                        </button>
+                        <button class = "classEdit"  style = "color: purple;" onclick = "editLecture('subMainDiv<%= lectureObj.id %>', '<%= lectureObj.id %>')">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        <button id = "contentBtnId<%= lectureObj.id %>" style = "color: purple; max-width: 100px; font-weight: bold; margin-left: 100px;" onclick = "addContent('<%= lectureObj.id %>', 'subDiv1<%= lectureObj.id %>')">+Content</button>
+                        <div id = "contentDiv<%= lectureObj.id %>"></div>
+                   </div>
+                <% } %>
+        	<% if(lectureObj.articleDraftStatus)
+        		{ %>
+		        	<div id = "contentSubDivId<%=lectureObj.id %>" style=" border: 1px solid black; height: auto; max-width: 700px; margin-left: 20px;">
+		            <button id = "btnArticle<%=lectureObj.id %>" onclick = "setArticleStateList('<%= lectureObj.id %>', 'subDiv1<%= lectureObj.id %>')">Article</button>
+		            <button class = "classRemoveContent" style = "color: purple;" onclick =  "cancelContentDiv('subDiv1<%=lectureObj.id %>', '<%= lectureObj.id %>')">
+		                <span class="glyphicon glyphicon-remove">
+		            </div>
+				 <% } %>
+		    <% if(lectureObj.article.state == 'EDIT')
+		 		{ %>
+                    <div id = "textAreaDivId" style=" border: 1px solid black; height: auto; max-width: 700px; margin-left: 20px;">
+    					<button class = "saveTextArea" style= "color: purple;" onclick = "saveTextAreaContent('<%= lectureObj.id %>', 'subDiv1<%= lectureObj.id %>', 'textAreaId<%=lectureObj.id %>')">Save</button>
+    	                <textarea id = "textAreaId<%=lectureObj.id %>" rows = "3" cols = "70" ><%= lectureObj.article.Content %></textarea>
+                        <button class = "classRemoveContent" style = "color: purple;" onclick =  "removeTextAreaDiv('textAreaDivId<%=lectureObj.id %>','<%= lectureObj.id %>', 'subDiv1<%= lectureObj.id %>')">
+                        <span class="glyphicon glyphicon-remove">
+                    </div>
+	            <% } %>
+            <% if(lectureObj.article.state == 'DISPLAY')
+             	{ %>
+	            	<div id = "articleLabelId<%=lectureObj.id %>" style = "border: 1px solid black; height: auto; width: 400px; margin-left: 20px;">
+		                 <label>Article: <%= lectureObj.article.Content %></label>
+		                 <button class = "articleEdit" id = "articleEditBtnId<%=lectureObj.id %>" style= "color: purple;" onclick = "setArticleStateList('<%= lectureObj.id %>', 'subDiv1<%= lectureObj.id %>')" >Edit</button>
+		            </div>
+	            <% } %>
+            `;
+	        let html = ejs.render(template, {lectureObj: lectureArray[index], index: index});
+            return html;
+        }
+
+        function appendTemplate(subDivId, lectureObjId)
+        {
+            let template = reRender(lectureObjId);
+            $(`#${subDivId}`).empty();
+            $(`#${subDivId}`).append(template);
+        }
+
+        function addContent(lectureObjId, subDivId)
+        {
+        	let index = lectureArray.findIndex(lecObj=>lecObj.id == lectureObjId);
+        	lectureArray[index].articleDraftStatus = true;
+            appendTemplate(subDivId, lectureObjId);  
+        }
+
+        function cancelContentDiv(subDivId, lectureObjId)
+        {
+            let index = lectureArray.findIndex(lecObj=>lecObj.id == lectureObjId);
+            lectureArray[index].articleDraftStatus = false;
+            appendTemplate(subDivId, lectureObjId);  
+        }
+
+        function removeTextAreaDiv(textAreaDivId, lectureObjId, subDivId)
+        {
+            let index = lectureArray.findIndex(lecObj=>lecObj.id == lectureObjId);
+            lectureArray[index].articleDraftStatus = true;
+            lectureArray[index].article.state = '';
+            appendTemplate(subDivId, lectureObjId);
+        }
+
+        function setArticleStateList(lectureObjId, subDivId)
+        {
+        	let index = lectureArray.findIndex(lecObj=>lecObj.id == lectureObjId);
+        	lectureArray[index].article.state = 'EDIT';
+            lectureArray[index].articleDraftStatus = false;
+            appendTemplate(subDivId, lectureObjId);  
+        }
+
+        function saveTextAreaContent(lectureObjId, subDivId, textAreaId)
+        {
+        	let index = lectureArray.findIndex(lecObj=>lecObj.id == lectureObjId);
+
+        	let textAreaInput = $(`#${textAreaId}`).val();
+            lectureArray[index].article.Content = textAreaInput;
+            console.log(lectureArray);
+        	lectureArray[index].article.state = 'DISPLAY';
+            lectureArray[index].articleDraftStatus = false;
+            appendTemplate(subDivId, lectureObjId);  
+        }
+        function cancelLectureDiv(subDivId, lecObjectId)
+        {
+            $(`#${subDivId}`).remove();
+            let indexToCancel = lectureArray.findIndex(lecObject=>lecObject.id == lecObjectId);
+            lectureArray.splice(indexToCancel, 1);
+        }
+
+        function saveLecture(inputId, lecObjId, subDivId)
+        {
+            let indexToSave = lectureArray.findIndex(lecObject=>lecObject.id == lecObjId);
+            let inputText = $(`#${inputId}`).val();
+            lectureArray[indexToSave].lecTitle = inputText;
+            console.log(lectureArray);
+            lectureArray[indexToSave].lectureState = 'DISPLAY';
+            appendTemplate(subDivId, lecObjId);
+        }
+
+        function removeLecture(subDivId, lecObjectId)
+        {
+            let indexToDelete = lectureArray.findIndex(lecObject=>lecObject.id == lecObjectId);
+            lectureArray.splice(indexToDelete, 1);
+            $(`#${subDivId}`).remove();
+            console.log(lectureArray);
+            for(var count = 0; count < lectureArray.length; count++)
+            {
+                lecObjectId = lectureArray[count].id;
+                lecObjTitle = lectureArray[count].lecTitle;
+                lectureArray[count].lectureState = 'DISPLAY';
+                let subDiv1Id = $(`#subDiv1${lecObjectId}`);
+                $(subDiv1Id).empty();
+                let template = reRender(lecObjectId);
+                $(subDiv1Id).append(template);
+            }
+        }
+
+        function editLecture(subMainDivId, lecObjectId)
+        {
+            let index = lectureArray.findIndex(lecObj=>lecObj.id == lecObjectId);
+            lectureArray[index].lectureState = 'EDIT';
+            lectureArray[index].article.state = ""
+            appendTemplate(subMainDivId, lecObjectId);
+        }
+    </script>
+   
+</head>
+<body>
+
+    <div class = "classAddNewSession" style = " height : auto; width: 900px; border: 1px solid black;">
+        <button style = "margin-left: 750px" class = "addNewLecture" onclick = "addNewLectureDiv()" >ADD</button>
+
+        <div id = "createNewLecture" style="margin: left"></div>
+    </div>
+
+</body>
+</html>
