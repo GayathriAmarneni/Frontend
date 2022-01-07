@@ -1,0 +1,88 @@
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+  /* .form-inline {  
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+  } */
+  .newLecture {
+    border: 1px solid black; 
+    height: 80px; 
+    width: 750px;  
+    margin-left: 60px; 
+    margin-top: 20px;
+  }
+  .lecture {
+    height: 70px; 
+    margin-left: 30px; 
+    margin-top: 20px; 
+    font-weight: bold;
+  }
+  .classAddNewSession {
+    height : auto; 
+    width: 900px; 
+    border: 1px solid black;
+  }
+
+  .displayLecture {
+    height : auto; 
+    width: 750px; 
+    border: 1px solid black;
+    margin-left: 60px; 
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  .label {
+    font-size: 15px; 
+    color: black;
+  }
+  /* form-inline label {
+    margin: 5px 10px 5px 0;
+  }. */
+
+  /* .form-inline input {
+    vertical-align: middle;
+    margin: 5px 10px 5px 0;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+
+  .button-section {
+    margin: 3%; */
+  /* }
+  .button {
+    padding: 10px 20px;
+    background-color: dodgerblue;
+    border: 1px solid #ddd;
+    color: white;
+    cursor: pointer;
+  }
+
+  .button:hover {
+    background-color: royalblue;
+  }
+
+  .remove {
+    background-color: rgb(192, 53, 53);
+  }
+  .remove:hover {
+    background-color: rgb(187, 43, 43);
+  } */
+  .btnRemove {
+    color: purple; 
+    font-weight: bold; 
+    max-width: 90px;
+    margin-left: 500px;
+  }
+  .lectureName {
+    width: 600px;
+  }
+  .saveTitle {
+    background-color: black;
+    color: white; 
+    max-width: 150px; 
+    font-weight: bold;
+  }
+  
