@@ -16,6 +16,7 @@ function ArticleEdit(props) {
         const updatedLec = {...lecture,...{article: {content: lecture.article.content, state: 'DISPLAY'}}}
         setLecture(updatedLec);
     }
+    
     return(
         <div id = "textAreaDivId" >
             <textarea id = "textAreaId" rows = "3" cols = "70" placeholder = "Enter text" value = {lecture.article.content} onChange = {handleOnChange} ></textarea>
