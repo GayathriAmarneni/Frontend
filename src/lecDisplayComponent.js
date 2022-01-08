@@ -22,13 +22,15 @@ function LectureDisplay(props) {
     }
 
     function setArticleStateList(event) {
-        const updateLecture = {...lecture,...{articleStatus: true, article:{...{content: lecture.article.content, state: 'LIST'}}}}
+        const updateLecture = {...lecture,...{articleStatus: true, article:{...lecture.article, state: 'LIST'}}}
         setLecture(updateLecture);
         props.onEdit(updateLecture);
     }
 
     function setArticleStateEdit(event) {
-        const updateLecture = {...lecture,...{article:{content: lecture.article.content, state: 'EDIT'}}}
+        const updateLecture = {...lecture,...{article:{...lecture.article, state: 'EDIT'}}}
+
+        // const updateLecture = {...lecture.article:{content: lecture.article.content, state: 'EDIT'}}}
         setLecture(updateLecture);
         props.onEdit(updateLecture);
     }
@@ -38,9 +40,12 @@ function LectureDisplay(props) {
         props.onEdit(updateLecture);
     }
 
-    function saveArticleContent(updatedLecObj) {
-        setLecture(updatedLecObj);
-        props.onEdit(updatedLecObj);
+    function saveArticleContent(updatedArtObj) {
+        const updateLecture = {...lecture};
+        updateLecture.article.content = updatedArtObj.content;
+        updateLecture.article.state = updatedArtObj.state;
+        setLecture(updateLecture);
+        props.onEdit(updateLecture);
     }
 
     return(
@@ -53,12 +58,13 @@ function LectureDisplay(props) {
             <button className = "contentBtn" id = "contentBtnId" onClick = {setArticleStateList}>+Content</button>
             {
                 lecture.articleStatus?
-                lecture.article.state === 'LIST'? <ContentList key = {lecture.id.slice(6)} object = {lecture} addContent = {setArticleStateEdit} cancel = {cancelContentDiv}/>:
-                lecture.article.state === 'EDIT'? <ArticleEdit key = {lecture.id.slice(8)} object = {lecture} cancelTextareaDiv = {setArticleStateList} onSave = {saveArticleContent}/>:
-                <ArticleDisplay key = {lecture.id.slice(12)} object = {lecture} edit = {setArticleStateEdit} cancel = {setArticleStateList}/>: null
+                lecture.article.state === 'LIST'? <ContentList key = {lecture.id.slice(6)} addContent = {setArticleStateEdit} cancel = {cancelContentDiv}/>:
+                lecture.article.state === 'EDIT'? <ArticleEdit key = {lecture.id.slice(8)} articleObject = {lecture.article} cancelTextareaDiv = {setArticleStateList} onSave = {saveArticleContent}/>:
+                <ArticleDisplay key = {lecture.id.slice(12)} content = {lecture.article.content} edit = {setArticleStateEdit} cancel = {setArticleStateList}/>: null
             }
         </div>
     );
 }
 
 export default LectureDisplay;
+
