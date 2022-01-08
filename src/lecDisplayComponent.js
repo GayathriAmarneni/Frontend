@@ -13,7 +13,7 @@ function LectureDisplay(props) {
     });
     
     function removeLecture(event){
-        props.remove(props.index)
+        props.remove(lecture)
     } 
 
     function editLecture(event) {
@@ -22,21 +22,25 @@ function LectureDisplay(props) {
     }
 
     function setArticleStateList(event) {
-        const updateLecture = {...lecture,...{articleStatus: true, article:{...{content: lecture.article.state, state: 'LIST'}}}}
+        const updateLecture = {...lecture,...{articleStatus: true, article:{...{content: lecture.article.content, state: 'LIST'}}}}
         setLecture(updateLecture);
+        props.onEdit(updateLecture);
     }
 
     function setArticleStateEdit(event) {
         const updateLecture = {...lecture,...{article:{content: lecture.article.content, state: 'EDIT'}}}
         setLecture(updateLecture);
+        props.onEdit(updateLecture);
     }
     function cancelContentDiv(event) {
         const updateLecture = {...lecture,...{articleStatus: false}}
         setLecture(updateLecture);
+        props.onEdit(updateLecture);
     }
 
     function saveArticleContent(updatedLecObj) {
         setLecture(updatedLecObj);
+        props.onEdit(updatedLecObj);
     }
 
     return(
@@ -51,7 +55,7 @@ function LectureDisplay(props) {
                 lecture.articleStatus?
                 lecture.article.state === 'LIST'? <ContentList key = {lecture.id.slice(6)} object = {lecture} addContent = {setArticleStateEdit} cancel = {cancelContentDiv}/>:
                 lecture.article.state === 'EDIT'? <ArticleEdit key = {lecture.id.slice(8)} object = {lecture} cancelTextareaDiv = {setArticleStateList} onSave = {saveArticleContent}/>:
-                <ArticleDisplay key = {lecture.id.slice(12)} object = {lecture} edit = {setArticleStateEdit} />: null
+                <ArticleDisplay key = {lecture.id.slice(12)} object = {lecture} edit = {setArticleStateEdit} cancel = {setArticleStateList}/>: null
             }
         </div>
     );
