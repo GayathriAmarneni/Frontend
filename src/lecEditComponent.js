@@ -19,7 +19,7 @@ function LectureEdit(props) {
         setLecture(updatedLec);
     }
     function cancelLecture(event) {
-        props.cancel(props.index)
+        props.cancel(lecture)
     }
     
     return(
@@ -29,7 +29,7 @@ function LectureEdit(props) {
                     <label id = "labelId">Lecture {props.index + 1}: </label> 
                     <input type="text" className = "lectureName" id = "idTextBox"  placeholder="Enter a Title" value = {lecture.name} onChange = {handleOnChange}></input>
                     <div id = "btnId" className= "saveAndCancelBtns" >
-                        <button className = "btnRemove" onClick = {cancelLecture}>Cancel</button>
+                        <button className = "btnRemove" onClick = {cancelLecture}>Delete</button>
                         <button type="submit" className = "saveTitle" onClick = {handleOnSave} >Save Lecture</button>
                     </div>
                 </div>
