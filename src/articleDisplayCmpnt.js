@@ -5,6 +5,9 @@ function ArticleDisplay(props) {
         <div id = "articleLabelId" >
             <label>Article: {props.object.article.content} </label>
             <button className = "articleEdit" id = "articleEditBtnId" onClick = {props.edit} >Edit</button>
+            <button className = "classRemove" onClick = {props.cancel} >
+            <span className="glyphicon glyphicon-remove"></span>
+            </button>
         </div>
     );
 }
