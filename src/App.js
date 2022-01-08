@@ -17,9 +17,10 @@ function App() {
     setLectureArr([...lectureArr, {id: generateUID(), name: "", state: "EDIT", articleStatus: false, article: {content:"", state:""}}])
   }
   
-  function cancelLectureDiv(index) {
+  function cancelLectureDiv(lecObj) {
     const lectArrayClone = [...lectureArr];
-    lectArrayClone.splice(index, 1);
+    const indexToDelete = lectArrayClone.findIndex(lecture => lecture.id === lecObj.id);
+    lectArrayClone.splice(indexToDelete, 1);
     setLectureArr(lectArrayClone);
   }
   
