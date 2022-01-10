@@ -22,8 +22,6 @@ function LectureEdit(props) {
     }
     function cancelLecture(event) {
         props.cancel(lecture)
-<<<<<<< HEAD
-=======
     }
     function setStartDate(date) {
         const updatedLec = {...lecture,...{startDate: date}}
@@ -32,20 +30,8 @@ function LectureEdit(props) {
     function setEndDate(date) {
         const updatedLec = {...lecture,...{endDate: date}}
         setLecture(updatedLec);
->>>>>>> 6f64042 (second commit)
     }
     return(
-<<<<<<< HEAD
-        <div id = "subMainDiv">
-            <div id = "subDiv1" className = "newLecture" >
-                <div className = "lecture" id = "subDiv" >
-                    <label id = "labelId">Lecture {props.index + 1}: </label> 
-                    <input type="text" className = "lectureName" id = "idTextBox"  placeholder="Enter a Title" value = {lecture.name} onChange = {handleOnChange}></input>
-                    <div id = "btnId" className= "saveAndCancelBtns" >
-                        <button className = "btnRemove" onClick = {cancelLecture}>Delete</button>
-                        <button type="submit" className = "saveTitle" onClick = {handleOnSave} >Save Lecture</button>
-                    </div>
-=======
         <div id = "subDiv1" className = "newLecture" >
             <div className = "lecture" id = "subDiv" >
                 <label id = "labelId">Lecture {props.index + 1}: </label> 
@@ -59,7 +45,6 @@ function LectureEdit(props) {
                 <div id = "btnId" className= "saveAndCancelBtns" >
                     <button className = "btnRemove" onClick = {cancelLecture}>Delete</button>
                     <button type="submit" className = "saveTitle" onClick = {handleOnSave} >Save Lecture</button>
->>>>>>> 6f64042 (second commit)
                 </div>
             </div>
         </div>
