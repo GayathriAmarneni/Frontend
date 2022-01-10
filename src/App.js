@@ -14,7 +14,7 @@ function App() {
   }
 
   function addNewLecture() {
-    setLectureArr([...lectureArr, {id: generateUID(), name: "", state: "EDIT", articleStatus: false, article: {content:"", state:""}}])
+    setLectureArr([...lectureArr, {id: generateUID(), startDate: "", endDate: "", name: "", state: "EDIT", articleStatus: false, article: {content:"", state:""}}])
   }
   
   function cancelLectureDiv(lecObj) {
